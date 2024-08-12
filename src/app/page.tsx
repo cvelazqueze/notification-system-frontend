@@ -15,6 +15,11 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [log, setLog] = useState<LogEntry[]>([]);
 
+  // UseEffect for logging the API URL when the component mounts
+  useEffect(() => {
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+  }, []);
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message) return alert('Message cannot be empty');
@@ -38,6 +43,7 @@ export default function Home() {
     }
   };
 
+  // Fetch the log when the component mounts
   useEffect(() => {
     fetchLog();
   }, []);
