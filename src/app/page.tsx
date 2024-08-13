@@ -15,11 +15,6 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [log, setLog] = useState<LogEntry[]>([]);
 
-  // UseEffect for logging the API URL when the component mounts
-  useEffect(() => {
-    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
-  }, []);
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message) return alert('Message cannot be empty');
@@ -43,39 +38,55 @@ export default function Home() {
     }
   };
 
-  // Fetch the log when the component mounts
   useEffect(() => {
     fetchLog();
   }, []);
 
   return (
-    <div>
-      <h1>Notification System</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Category</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+    <main className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4 text-center">Notification System</h1>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2">Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          >
             <option value="">Select Category</option>
             <option value="Sports">Sports</option>
             <option value="Finance">Finance</option>
             <option value="Movies">Movies</option>
           </select>
         </div>
-        <div>
-          <label>Message</label>
-          <textarea value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2">Message</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          ></textarea>
         </div>
-        <button type="submit">Send Notification</button>
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+          Send Notification
+        </button>
       </form>
       
-      <h2>Notification Log</h2>
-      <ul>
+      <h2 className="text-xl font-semibold mt-8 mb-4">Notification Log</h2>
+      <ul className="bg-white p-4 rounded-lg shadow-md">
         {log.map((entry, index) => (
-          <li key={index}>
-            [{entry.timestamp}] {entry.category} - {entry.message} via {entry.channel}
+          <li key={index} className="mb-2 border-b last:border-b-0 pb-2">
+            <span className="text-sm text-gray-600">
+              [{new Date(entry.timestamp).toLocaleString()}]
+            </span> 
+            <span className="font-semibold"> {entry.category}</span> - 
+            <span> {entry.message}</span> 
+            <span className="text-gray-500"> via {entry.channel}</span>
           </li>
         ))}
       </ul>
-    </div>
+    </main>
   );
 }
